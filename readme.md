@@ -8,3 +8,4 @@ You can run `mvn package` under project folder to build it, then double click `t
 
 Here is a snapshot of game gui:
 
+![diamond-flying](https://user-images.githubusercontent.com/5539582/99905808-23e60000-2d0e-11eb-8949-e53f0e6ebf19.png)
