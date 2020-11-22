@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	<bean id="gameRunningController" class="flyingdiamond.controller.GameRunningController">
+		<property name="gameControlView" ref="gameControlView"/>
+		<property name="gameStateView" ref="gameStateView"/>		
+		<property name="articleMatrixView" ref="articleMatrixView"/>
+		<property name="soundView" ref="soundView"/>
+		<property name="mainView" ref="mainView"/>
+		<property name="articleMatrix" ref="articleMatrix"/>
+		<property name="gameRunningManager" ref="gameRunningManager"/>
+	</bean>
+	<bean id="mainController" class="flyingdiamond.controller.MainController">
+		<property name="gameRunningController" ref="gameRunningController" />
+	</bean>
+</beans>

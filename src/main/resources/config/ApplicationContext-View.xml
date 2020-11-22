@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	<!-- Menu Bar-->
+	<bean id="newGameMenuItem" class="javax.swing.JMenuItem" />	
+	<bean id="exitMenuItem" class="javax.swing.JMenuItem" />	
+	<bean id="mainFrameMenuBar" class="flyingdiamond.view.uicomponent.MenuBar">
+		<property name="newGameMenuItem" ref="newGameMenuItem"/>
+		<property name="exitMenuItem" ref="exitMenuItem"/>
+	</bean>
+	
+	<!-- Tool Bar -->
+	<bean id="newGameButton" class="javax.swing.JButton"/>
+	<bean id="speakerButton" class="javax.swing.JButton"/>
+	<bean id="exitButton" class="javax.swing.JButton"/>
+	<bean id="scorePanel" class="flyingdiamond.view.uicomponent.ScorePanel"/>
+	<bean id="lifePanel" class="flyingdiamond.view.uicomponent.LifePanel"/>
+	<bean id="mainFrameToolBar" class="flyingdiamond.view.uicomponent.ToolBar">
+		<property name="newGameButton" ref="newGameButton"/>
+		<property name="speakerButton" ref="speakerButton"/>	
+		<property name="exitButton" ref="exitButton"/>	
+		<property name="scorePanel" ref="scorePanel"/>
+		<property name="lifePanel" ref="lifePanel"/>
+	</bean>
+	
+	<!-- Article Matrix Panel -->
+	<bean id="articleMatrixPanel" class="javax.swing.JPanel"/>
+	
+	<!-- Message Box -->
+	<bean id="messageBox" class="flyingdiamond.view.uicomponent.MessageBox">
+		<constructor-arg index="0" ref="mainFrame"/>
+		<constructor-arg index="1" value="true"/>
+	</bean>
+	
+	<!-- Main Frame -->
+	<bean id="mainFrame" class="flyingdiamond.view.uicomponent.MainFrame">
+		<property name="mainFrameMenuBar" ref="mainFrameMenuBar"/>
+		<property name="mainFrameToolBar" ref="mainFrameToolBar"/>
+		<property name="articleMatrixPanel" ref="articleMatrixPanel"/>
+	</bean>
+	
+	<!-- Views -->
+	<bean id="gameControlView" class="flyingdiamond.view.GameControlView">
+		<property name="newGameMenuItem" ref="newGameMenuItem"/>
+		<property name="newGameButton" ref="newGameButton"/>
+		<property name="exitMenuItem" ref="exitMenuItem"/>
+		<property name="exitButton" ref="exitButton"/>
+		<property name="gameRunningController" ref="gameRunningController"/>
+	</bean>
+	
+	<bean id="gameStateView" class="flyingdiamond.view.GameStateView">
+		<property name="scorePanel" ref="scorePanel"/>
+		<property name="lifePanel" ref="lifePanel"/>
+	</bean>
+
+	<bean id="soundView" class="flyingdiamond.view.SoundView"></bean>
+	
+	<bean id="articleMatrixView" class="flyingdiamond.view.ArticleMatrixView">
+		<property name="articleMatrixPanel" ref="articleMatrixPanel"/>
+		<property name="gameRunningController" ref="gameRunningController"/>
+	</bean>
+	
+	<bean id="mainView" class="flyingdiamond.view.MainView">
+		<property name="mainFrame" ref="mainFrame"/>
+		<property name="messageBox" ref="messageBox"/>
+	</bean>
+</beans>

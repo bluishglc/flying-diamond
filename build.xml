@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+
+<project name="diamondflying" default="compile">
+    
+    <!-- properies -->
+    
+    <property name="src.main.java.dir" value="src/main/java"/>
+    <property name="src.main.resources.dir" value="src/main/resources"/>
+    <property name="src.test.java.dir" value="src/test/java"/>
+    <property name="src.test.resources.dir" value="src/test/resources"/>
+    
+    <property name="build.classes.dir" value="build/classes"/>
+    <property name="build.testreport.dir" value="build/testreport"/>
+    <property name="build.dist.dir" value="build/dist"/>
+    <property name="build.doc.dir" value="build/doc"/>
+    <property name="build.dir" value="build"/>
+    
+    <property name="lib.dir" value="lib"/>
+    <property name="main.class" value="flyingdiamond.controller.MainController"/>
+	<property name="appjar.file" value="flyingdiamond.jar"/>
+    
+    <!-- classpath -->
+    
+    <path id="classpath">
+        <fileset file="${lib.dir}/*.jar"/>
+        <pathelement path="${build.classes.dir}"/>
+    </path>
+    
+    <!-- Initialize-->
+    
+    <target name="init" depends="clean">
+    </target>
+    
+    <!-- Compile -->
+    
+    <target name="compile" depends="init" description="compile the source files">
+        <mkdir dir="${build.classes.dir}"/>
+        <javac srcdir="${src.main.java.dir};${src.test.java.dir};" destdir="${build.classes.dir}" target="1.6">
+            <classpath refid="classpath"/>
+        </javac>
+        <copy todir="${build.classes.dir}">
+            <fileset dir="${src.main.resources.dir}" includes="**"/>
+            <fileset dir="${src.test.resources.dir}" includes="**"/>
+        </copy>
+    </target>
+    
+    <!-- Unzip lib -->
+	
+    <target name="unziplib">
+        <unjar dest="${build.classes.dir}">
+            <fileset file="${lib.dir}/*.jar" excludes="junit*.jar,jmock*.jar,hamcrest*.jar,cglibnodep*.jar,objenesis*.jar"/>
+        </unjar>
+    </target>
+    
+	<!-- Test -->
+	
+    <target name="test" depends="compile" description="run junit test">
+        <mkdir dir="${build.testreport.dir}"/>
+        <junit printsummary="on" haltonfailure="false" failureproperty="tests.failed" showoutput="true">
+        	<classpath refid="classpath"/>
+            <formatter type="plain"/>
+            <batchtest todir="${build.testreport.dir}">
+                <fileset dir="${build.classes.dir}">
+                    <include name="**/*Test.*"/>
+                </fileset>
+            </batchtest>
+        </junit>
+        <fail if="tests.failed">
+        </fail>
+    </target>
+	
+    <!-- Package -->
+    
+    <target name="package" depends="compile,unziplib,test" description="make .jar file">
+        <mkdir dir="${build.dist.dir}"/>
+        <jar destfile="${build.dist.dir}/${appjar.file}" basedir="${build.classes.dir}">
+            <exclude name="**/*Test.*"/>
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+    </target>
+    
+	<!-- Run -->
+	<target name="run" depends="package">
+		<java jar="${build.dist.dir}/${appjar.file}" fork="true"> </java>
+	</target>
+	
+	<!-- Clean -->
+	
+    <target name="clean" description="clean build artifacts">
+        <delete dir="${build.dir}"/>
+    </target>
+    
+</project>
